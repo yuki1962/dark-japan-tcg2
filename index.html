@@ -3,218 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Japan Battle Series | Official</title>
+    <title>Dark Japan Battle Series | The Ultimate TCG</title>
     <style>
         :root {
-            --bg-color: #000000;
-            --accent-color: #8B0000;
-            --text-color: #C0C0C0;
-            --card-bg: #1a1a1a;
-            --transition: 0.3s;
-        }
-
-        .light-mode {
-            --bg-color: #f4f4f4;
-            --accent-color: #b22222;
-            --text-color: #333333;
-            --card-bg: #ffffff;
+            --black: #050505;
+            --blood-red: #8B0000;
+            --silver: #C0C0C0;
+            --gold: #D4AF37;
         }
 
         body {
             margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--black);
+            color: var(--silver);
             font-family: 'Sawarabi Mincho', serif;
-            transition: var(--transition);
             overflow-x: hidden;
         }
 
-        /* Mode Toggle */
-        .mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        /* Hero Section */
-        header {
+        /* 背景動画セクション */
+        .hero {
+            position: relative;
             height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            filter: brightness(0.4) contrast(1.2);
+        }
+
+        .hero-content {
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1578632292335-df3abbb0d586?q=80&w=1000&auto=format&fit=crop'); /* Placeholder for ONI NINJA visual */
-            background-size: cover;
-            background-position: center;
-            border-bottom: 3px solid var(--accent-color);
+            z-index: 1;
         }
 
         h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            letter-spacing: 5px;
+            font-size: clamp(2rem, 8vw, 5rem);
             color: white;
-            text-shadow: 2px 2px 10px var(--accent-color);
+            text-shadow: 0 0 20px var(--blood-red);
+            letter-spacing: 10px;
+            margin-bottom: 0;
         }
 
-        .cta-button {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 15px 40px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            border-radius: 2px;
-            transition: var(--transition);
-            border: 1px solid transparent;
-        }
-
-        .cta-button:hover {
-            background-color: transparent;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-color);
-        }
-
-        /* Concept Section */
-        .section {
-            padding: 80px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
+        /* カードギャラリー（5枚） */
+        .section-title {
             text-align: center;
-        }
-
-        .section h2 {
+            padding: 50px 0;
             font-size: 2.5rem;
-            color: var(--accent-color);
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--accent-color);
-            display: inline-block;
+            color: var(--blood-red);
+            text-transform: uppercase;
+            letter-spacing: 5px;
         }
 
-        /* Card Gallery */
-        .gallery {
+        .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 0 10%;
         }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--accent-color);
-            padding: 15px;
-            transition: var(--transition);
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            transition: 0.5s;
             position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(139, 0, 0, 0.3);
+            border-color: var(--blood-red);
+            transform: scale(1.05) rotateY(10deg);
+            box-shadow: 0 0 30px var(--blood-red);
         }
 
-        .card-img {
+        .card img {
             width: 100%;
-            height: 350px;
-            background: #333; /* Placeholder for card art */
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            filter: grayscale(0.5);
+            transition: 0.5s;
         }
 
-        .rarity {
-            color: gold;
-            font-size: 0.9rem;
+        .card:hover img {
+            filter: grayscale(0);
         }
 
-        /* Footer */
-        footer {
-            padding: 40px;
-            background: #000;
-            color: #666;
+        /* 「次はこれ」セクション */
+        .coming-soon-card {
+            margin: 100px auto;
+            max-width: 300px;
             text-align: center;
-            border-top: 1px solid #333;
+            opacity: 0.7;
+            filter: blur(5px);
+            border: 2px dashed var(--blood-red);
+            padding: 50px;
         }
 
-        .social-links a {
-            color: var(--text-color);
-            margin: 0 10px;
-            text-decoration: none;
+        .teaser-text {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-top: -80px;
+            margin-bottom: 100px;
+            animation: pulse 2s infinite;
         }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* メール登録フォーム */
+        .waitlist {
+            background: linear-gradient(to bottom, transparent, #1a0000);
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        input[type="email"] {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--blood-red);
+            color: white;
+            padding: 10px;
+            width: 250px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .submit-btn {
+            background: var(--blood-red);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: white;
+            color: var(--blood-red);
         }
     </style>
 </head>
 <body>
 
-    <button class="mode-toggle" onclick="toggleMode()">Mode Switch</button>
-
-    <header>
-        <h1>DARK JAPAN<br>BATTLE SERIES</h1>
-        <p style="font-size: 1.5rem; margin-bottom: 2rem;">闇に染まる日本、究極のカードバトルが幕を開ける。</p>
-        <a href="#" class="cta-button">Kickstarter Coming Soon</a>
-    </header>
-
-    <section class="section">
-        <h2>THE WORLD</h2>
-        <p>静寂を切り裂く刃、影に潜む「鬼」の咆哮。かつての美しい日本は、闇の力によって塗り替えられた。ここでは、古の武士道と邪悪な術が交差する。伝説の忍「ONI NINJA」を筆頭に、運命を懸けたカードバトルが今、始まる。</p>
-    </section>
-
-    <section class="section" style="background-color: rgba(139,0,0,0.05);">
-        <h2>CARD COLLECTION</h2>
-        <div class="gallery">
-            <div class="card">
-                <div class="card-img" style="background: linear-gradient(45deg, #1a1a1a, #8B0000);">ONI NINJA</div>
-                <h3>ONI NINJA</h3>
-                <p class="rarity">★★★★★ SSR</p>
-                <p>属性：闇 / 種族：忍</p>
-            </div>
-            <div class="card">
-                <div class="card-img" style="background: linear-gradient(45deg, #1a1a1a, #333);">KATANA SOUL</div>
-                <h3>KATANA SOUL</h3>
-                <p class="rarity">★★★ R</p>
-                <p>属性：鋼 / 種族：武器</p>
-            </div>
-            <div class="card">
-                <div class="card-img" style="background: linear-gradient(45deg, #1a1a1a, #4a0e0e);">HELL FIRE</div>
-                <h3>HELL FIRE</h3>
-                <p class="rarity">★★★★ SR</p>
-                <p>属性：火 / 種族：術</p>
-            </div>
+    <section class="hero">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1>DARK JAPAN</h1>
+            <p>BATTLE SERIES</p>
         </div>
     </section>
 
-    <section class="section">
-        <h2>LATEST NEWS</h2>
-        <p>Instagramにて「ONI NINJA」の開封動画公開中！</p>
-        <div style="margin-top: 20px;">
-            <a href="#" style="color: var(--accent-color);">Watch on Instagram →</a>
-        </div>
+    <h2 class="section-title">Initial Lineup</h2>
+    <div class="card-grid">
+        <div class="card"><h3>ONI NINJA</h3><p>SSR</p></div>
+        <div class="card"><h3>SAMURAI SPIRIT</h3><p>SR</p></div>
+        <div class="card"><h3>OIRAN CURSE</h3><p>SR</p></div>
+        <div class="card"><h3>KUMIKO WALL</h3><p>R</p></div>
+        <div class="card"><h3>KATANA SLASH</h3><p>C</p></div>
+    </div>
+
+    <div class="coming-soon-card">
+        <p>? ? ?</p>
+    </div>
+    <p class="teaser-text">NEXT SHADOW REVEALING SOON...</p>
+
+    <section class="waitlist">
+        <h2>JOIN THE DARKNESS</h2>
+        <p>Kickstarter開始の通知を最速で受け取る</p>
+        <form onsubmit="alert('登録ありがとうございます！闇の世界へようこそ。'); return false;">
+            <input type="email" placeholder="Your Email Address" required>
+            <button type="submit" class="submit-btn">ACCESS</button>
+        </form>
     </section>
 
-    <footer>
-        <div class="social-links">
-            <a href="#">Instagram</a> | <a href="#">X (Twitter)</a> | <a href="#">YouTube</a>
-        </div>
-        <p>&copy; 2026 Dark Japan Battle Series. All Rights Reserved.</p>
+    <footer style="text-align: center; padding: 50px; color: #444;">
+        &copy; 2026 Dark Japan Battle Series
     </footer>
 
-    <script>
-        function toggleMode() {
-            document.body.classList.toggle('light-mode');
-        }
+</body>
+</html>
     </script>
 </body>
 </html>
